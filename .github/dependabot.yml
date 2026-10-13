@@ -1,0 +1,16 @@
+version: 2
+
+updates:
+  - package-ecosystem: docker-compose
+    directories:
+      - "/traefik-httponly"
+      - "/traefik-letsencrypt"
+      - "/traefik-sslcert"
+      - "/wordpress-mariadb-cloudflared"
+      - "/wordpress-mariadb-sslcert"
+      - "/wordpress-mariadb-traefik"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "04:00"
+      timezone: Etc/UTC

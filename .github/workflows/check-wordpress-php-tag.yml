@@ -1,0 +1,56 @@
+name: Check WordPress PHP-FPM tag
+
+on:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: check-wordpress-php-tag
+  cancel-in-progress: false
+
+jobs:
+  check-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Find a newer stable PHP-FPM tag
+        id: candidate
+        run: python3 scripts/check_wordpress_php_tag.py >> "$GITHUB_OUTPUT"
+
+      - name: Update WordPress templates
+        if: steps.candidate.outputs.tag != ''
+        env:
+          WORDPRESS_TAG: ${{ steps.candidate.outputs.tag }}
+          BRANCH_NAME: automation/wordpress-php-fpm-tag
+        run: |
+          git fetch origin main
+          git checkout --force -B "$BRANCH_NAME" origin/main
+          python3 scripts/check_wordpress_php_tag.py --update "$WORDPRESS_TAG"
+          git add wordpress-*/docker-compose.yml
+          git -c user.name="github-actions[bot]" \
+            -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Update WordPress PHP-FPM tag to $WORDPRESS_TAG"
+          git push --force origin "HEAD:refs/heads/$BRANCH_NAME"
+
+      - name: Create or update pull request
+        if: steps.candidate.outputs.tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WORDPRESS_TAG: ${{ steps.candidate.outputs.tag }}
+          BRANCH_NAME: automation/wordpress-php-fpm-tag
+        run: |
+          title="Update WordPress PHP-FPM tag to $WORDPRESS_TAG"
+          body="The scheduled registry check found the newer stable WordPress PHP-FPM tag \`$WORDPRESS_TAG\`. This PR updates all WordPress example templates together. Review the PHP release and template compatibility before merging; this PR is not merged automatically."
+          pull_request_number="$(gh pr list --state open --head "$BRANCH_NAME" --json number --jq '.[0].number // empty')"
+          if [ -n "$pull_request_number" ]; then
+            gh pr edit "$pull_request_number" --title "$title" --body "$body"
+          else
+            gh pr create --base main --head "$BRANCH_NAME" --title "$title" --body "$body"
+          fi
