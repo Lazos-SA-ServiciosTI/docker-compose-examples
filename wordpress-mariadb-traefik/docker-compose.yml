@@ -1,0 +1,68 @@
+services:
+
+  wordpress:
+    image: wordpress:php8.5-fpm
+    restart: unless-stopped
+    environment:
+      TZ: America/Santiago
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('FS_METHOD', 'direct');
+    volumes:
+      - ./wordpress:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.30-alpine3.24
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    environment:
+      TZ: America/Santiago
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./wordpress:/var/www/html
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${TRAEFIK_NETWORK}"
+      - "traefik.http.routers.wordpress-http.rule=Host(`${WORDPRESS_DOMAIN}`)"
+      - "traefik.http.routers.wordpress-http.entrypoints=web"
+      - "traefik.http.routers.wordpress-http.service=wordpress"
+      - "traefik.http.routers.wordpress-https.rule=Host(`${WORDPRESS_DOMAIN}`)"
+      - "traefik.http.routers.wordpress-https.entrypoints=websecure"
+      - "traefik.http.routers.wordpress-https.tls=true"
+      - "traefik.http.routers.wordpress-https.tls.certresolver=letsencrypt"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+
+  db:
+    image: mariadb:12.3
+    restart: unless-stopped
+    environment:
+      TZ: America/Santiago
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  default: {}
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK}

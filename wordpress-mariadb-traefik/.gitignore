@@ -1,0 +1,6 @@
+# Configuración local y secretos
+.env
+
+# Datos generados por los contenedores
+/db/
+/wordpress/

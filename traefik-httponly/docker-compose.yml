@@ -1,0 +1,19 @@
+services:
+  traefik:
+    image: traefik:v3.7
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=${TRAEFIK_NETWORK}"
+      - "--entryPoints.web.address=:80"
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    name: ${TRAEFIK_NETWORK}
