@@ -1,0 +1,6 @@
+tunnel: <tunnel_id>
+credentials-file: /home/nonroot/.cloudflared/<tunnel_id>.json
+ingress:
+  - hostname: <hostname>
+    service: http://nginx:80
+  - service: http_status:404

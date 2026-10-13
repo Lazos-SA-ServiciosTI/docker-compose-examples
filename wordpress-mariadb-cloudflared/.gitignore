@@ -1,0 +1,7 @@
+# Configuración local y secretos
+.env
+cloudflared/*.json
+
+# Datos generados por los contenedores
+/db/
+/wordpress/
