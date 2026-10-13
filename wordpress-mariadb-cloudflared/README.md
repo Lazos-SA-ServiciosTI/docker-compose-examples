@@ -21,7 +21,7 @@ mv wordpress-mariadb-cloudflared ../mi-proyecto
 **Limpieza opcional:** Después de comprobar que la carpeta del proyecto existe y contiene los archivos de la plantilla, puedes eliminar el clon del repositorio de ejemplos:
 
 ```sh
-rm -rf docker-compose-examples
+cd .. && rm -rf -- docker-compose-examples
 ```
 
 ## Requisitos
