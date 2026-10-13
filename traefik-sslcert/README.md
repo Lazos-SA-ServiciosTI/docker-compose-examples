@@ -30,6 +30,8 @@ cd .. && rm -rf -- docker-compose-examples
 - Un certificado TLS y su clave privada en formato PEM, con la cadena completa del certificado.
 - DNS y reglas de firewall que permitan a los clientes llegar al host en los puertos 80 y 443.
 
+**Uso con un usuario no root:** Ejecuta los comandos y administra los archivos sin `sudo`, siempre que el usuario tenga permisos de escritura en la carpeta del proyecto y acceso al daemon de Docker (por ejemplo, que pertenezca al grupo `docker`). En una instalación rootless de Docker no hace falta pertenecer a ese grupo. El grupo `docker` permite obtener privilegios equivalentes a root en el host; añádelo solo a usuarios de confianza.
+
 ## Configuración inicial
 
 1. Copia `.env.example` a `.env`. Deja `TRAEFIK_NETWORK=traefik` o reemplázalo por el nombre que quieras usar para la red compartida.

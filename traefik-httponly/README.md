@@ -32,6 +32,8 @@ cd .. && rm -rf -- docker-compose-examples
 - Los puertos TCP 80 disponibles en el host.
 - Un registro DNS que apunte al host si se accederá por un dominio.
 
+**Uso con un usuario no root:** Ejecuta los comandos y administra los archivos sin `sudo`, siempre que el usuario tenga permisos de escritura en la carpeta del proyecto y acceso al daemon de Docker (por ejemplo, que pertenezca al grupo `docker`). En una instalación rootless de Docker no hace falta pertenecer a ese grupo. El grupo `docker` permite obtener privilegios equivalentes a root en el host; añádelo solo a usuarios de confianza.
+
 ## Configuración e inicio
 
 1. Copia `.env.example` a `.env`. Puedes mantener `TRAEFIK_NETWORK=traefik` o reemplazarlo por el nombre de la red compartida que quieras.

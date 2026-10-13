@@ -4,6 +4,8 @@ Repositorio de plantillas de Docker Compose para desplegar aplicaciones y servic
 
 Estos ejemplos son plantillas básicas de referencia. Revísalos y adáptalos a los requisitos, la seguridad y la operación de cada proyecto antes de usarlos.
 
+**Uso con un usuario no root:** Clona y administra los archivos, y ejecuta Docker Compose, con un usuario no root y sin `sudo`, siempre que tenga permisos de escritura en la carpeta del proyecto y acceso al daemon de Docker (por ejemplo, que pertenezca al grupo `docker`). En una instalación rootless de Docker no hace falta pertenecer a ese grupo. Ten presente que el grupo `docker` permite obtener privilegios equivalentes a root en el host; añádelo solo a usuarios de confianza.
+
 ## Ejemplos
 
 | Carpeta | Descripción |
@@ -26,5 +28,3 @@ Para usar una plantilla, entra a su carpeta y sigue el README correspondiente. L
 Dependabot revisa semanalmente las imágenes declaradas en los archivos `docker-compose.yml` y abre PR separadas por imagen y plantilla, incluidas las actualizaciones de versión mayor o menor. Revisa los cambios y su compatibilidad antes de fusionar cada PR; no se habilita la fusión automática. Si agregas una plantilla, incluye su carpeta en `directories` de `.github/dependabot.yml`.
 
 Las etiquetas de WordPress que cambian de familia, como `php8.5-fpm` a `php8.6-fpm`, se revisan con un workflow semanal porque Dependabot puede no relacionar esos nombres como actualizaciones de la misma etiqueta. Si detecta una versión estable más nueva, el workflow abre o actualiza una sola PR con todas las plantillas WordPress. Revisa la versión y compatibilidad antes de fusionarla. También puedes ejecutarlo manualmente desde **Actions → Check WordPress PHP-FPM tag → Run workflow**.
-
-Para permitir que el workflow cree esa PR, un administrador del repositorio debe abrir **Settings → Actions → General** y activar **Allow GitHub Actions to create and approve pull requests**. Si la organización restringe este permiso, debe autorizarlo también su administrador. El workflow limita sus permisos a escritura de contenido y PR; no fusiona cambios automáticamente.

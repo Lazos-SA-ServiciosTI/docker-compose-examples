@@ -30,6 +30,8 @@ cd .. && rm -rf -- docker-compose-examples
 - Un túnel de Cloudflare creado y configurado para usar este servicio. La configuración detallada del túnel está en la guía del equipo: [Crear un túnel con Cloudflare Tunnel — utilizando Docker Compose](https://github.com/Lazos-SA-ServiciosTI/shared-notes-obsidian/blob/main/ServiciosTI/Crear%20un%20t%C3%BAnel%20con%20Cloudflare%20Tunnel.md#utilizando-docker-compose).
 - El archivo JSON de credenciales del túnel.
 
+**Uso con un usuario no root:** Ejecuta los comandos y administra los archivos sin `sudo`, siempre que el usuario tenga permisos de escritura en la carpeta del proyecto y acceso al daemon de Docker (por ejemplo, que pertenezca al grupo `docker`). En una instalación rootless de Docker no hace falta pertenecer a ese grupo. El grupo `docker` permite obtener privilegios equivalentes a root en el host; añádelo solo a usuarios de confianza.
+
 ## Configuración inicial
 
 1. Copia `.env.example` a `.env` y completa los valores de base de datos y WordPress.

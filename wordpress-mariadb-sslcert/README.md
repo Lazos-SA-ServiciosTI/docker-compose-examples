@@ -30,6 +30,8 @@ cd .. && rm -rf -- docker-compose-examples
 - Un certificado TLS y su clave privada en formato PEM. El certificado debe cubrir el dominio que usarás para WordPress; coloca la cadena completa en el archivo de certificado.
 - Los puertos TCP 80 y 443 disponibles en el host y permitidos en el firewall para el acceso público.
 
+**Uso con un usuario no root:** Ejecuta los comandos y administra los archivos sin `sudo`, siempre que el usuario tenga permisos de escritura en la carpeta del proyecto y acceso al daemon de Docker (por ejemplo, que pertenezca al grupo `docker`). En una instalación rootless de Docker no hace falta pertenecer a ese grupo. El grupo `docker` permite obtener privilegios equivalentes a root en el host; añádelo solo a usuarios de confianza.
+
 ## Configuración inicial
 
 1. Copia `.env.example` a `.env` y completa las credenciales de MariaDB y WordPress. Usa el mismo nombre de base de datos, usuario y contraseña en las variables de ambos servicios.
