@@ -48,7 +48,7 @@ services:
       start_period: 30s
 
   cloudflared:
-    image: cloudflare/cloudflared:2026.9.1
+    image: cloudflare/cloudflared:2026.10.0
     restart: unless-stopped
     volumes:
       - ./cloudflared:/home/nonroot/.cloudflared:ro
