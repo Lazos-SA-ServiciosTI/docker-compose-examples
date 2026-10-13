@@ -18,7 +18,7 @@ services:
         condition: service_healthy
 
   nginx:
-    image: nginx:1.30-alpine3.24
+    image: nginx:1.31-alpine3.24
     restart: unless-stopped
     depends_on:
       - wordpress
