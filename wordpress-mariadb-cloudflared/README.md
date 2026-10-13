@@ -16,15 +16,18 @@ Mueve la plantilla fuera del clon y dale el nombre del proyecto. En este ejemplo
 
 ```sh
 mv wordpress-mariadb-cloudflared ../mi-proyecto
-cd ../mi-proyecto
 ```
 
-Continúa con la configuración inicial indicada abajo.
+**Limpieza opcional:** Después de comprobar que la carpeta del proyecto existe y contiene los archivos de la plantilla, puedes eliminar el clon del repositorio de ejemplos:
+
+```sh
+rm -rf docker-compose-examples
+```
 
 ## Requisitos
 
 - Docker Engine y Docker Compose v2 (`docker compose`).
-- Un túnel de Cloudflare creado y configurado para usar este servicio.
+- Un túnel de Cloudflare creado y configurado para usar este servicio. La configuración detallada del túnel está en la guía del equipo: [Crear un túnel con Cloudflare Tunnel — utilizando Docker Compose](https://github.com/Lazos-SA-ServiciosTI/shared-notes-obsidian/blob/main/ServiciosTI/Crear%20un%20t%C3%BAnel%20con%20Cloudflare%20Tunnel.md#utilizando-docker-compose).
 - El archivo JSON de credenciales del túnel.
 
 ## Configuración inicial
@@ -36,8 +39,6 @@ Continúa con la configuración inicial indicada abajo.
 5. Copia el archivo de credenciales del túnel a `cloudflared/` y nómbralo `<tunnel_id>.json`, para que coincida con `credentials-file` en `config.yml`.
 
 `.env` y las credenciales se excluyen de Git mediante `.gitignore`. No agregues secretos al repositorio.
-
-La configuración detallada del túnel está en la guía del equipo: [Crear un túnel con Cloudflare Tunnel — utilizando Docker Compose](https://github.com/Lazos-SA-ServiciosTI/shared-notes-obsidian/blob/main/ServiciosTI/Crear%20un%20t%C3%BAnel%20con%20Cloudflare%20Tunnel.md#utilizando-docker-compose).
 
 ## Iniciar y detener
 
